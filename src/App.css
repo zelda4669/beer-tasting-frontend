@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.breweryCard {
+  border-style: solid;
+  padding: 20px;
+}
+
+.allBreweries {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.breweryDetails {
+  padding: 10px;
+}

@@ -1,42 +1,45 @@
+import React, { useState, useEffect } from 'react'
+
+import Brewery from './components/brewery'
+
+import breweryService from './services/breweryService'
+
 import './App.css'
 
-function Brewery({ item }) {
-  console.log('in component', item)
+function App() {
+  const [checked, setChecked] = useState(false)
+  const [breweries, setBreweries] = useState([])
+
+  useEffect(() => {
+    breweryService
+      .getAll()
+      .then(initialBreweries => {
+        setBreweries(initialBreweries)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+
+  function handleCheck(event) {
+    let id = event.target.id
+    let brewery = breweries.find(b => b.id === id)
+    let changedBrewery = {...brewery, tasted: !brewery.tasted}
+    breweryService
+      .updateBrewery(brewery.id, changedBrewery)
+    setChecked(!checked)
+  }
+
   return (
     <div>
-      <p>{item.name}</p>
-      <p>{item.location}</p>
-      <p>Tasted? {item.tasted}</p>
+      <h1>Breweries</h1>
+        <div class='allBreweries'>
+          {breweries.map(b =>
+            <Brewery key={b.id} item={b} handleCheck={handleCheck} />
+          )}
+        </div>
+        
     </div>
-  )
-}
-
-function App() {
-  const breweries = [
-    {
-      'name': 'Postdoc',
-      'location': 'Redmond',
-      'tasted': true,
-      'id': 1
-    },
-    {
-      'name': 'Aslan',
-      'location': 'Bellingham',
-      'tasted': false,
-      'id': 2
-    },
-    {
-      'name': 'Nunchucks',
-      'location': 'Lynnwood',
-      'tasted': false,
-      'id': 3
-    }
-  ]
-
-  console.log('in app', breweries[0])
-
-  return (
-    <Brewery item={breweries[0]} />
   )
 }
 
