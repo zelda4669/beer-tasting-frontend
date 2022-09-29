@@ -6,9 +6,9 @@ function getAll() {
     return req.then(res => res.data)
 }
 
-function createBrewery(newObject) {
-    let req = axios.post(baseUrl, newObject)
-    return req.then(res => res.data)
+const create = (newObject) => {
+    let request = axios.post(baseUrl, newObject)
+    return request.then(response => response.data)
 }
 
 function updateBrewery(id, newObject) {
@@ -22,7 +22,7 @@ function deleteBrewery(id) {
 
 const breweryService = { 
     getAll, 
-    createBrewery, 
+    create, 
     updateBrewery, 
     deleteBrewery 
 }

@@ -16,7 +16,7 @@ function Brewery({ item, handleCheck, handleDelete, handleUpdate }) {
                     />
                 </li>
                 <li>
-                    <Button value={item.id} onClick={handleUpdate} text='Update Brewery' />
+                    {/* <Button value={item.id} onClick={handleUpdate} text='Update Brewery' /> */}
                     <Button value={item.id} onClick={handleDelete} text='Delete Brewery' />
                 </li>
             </ul>

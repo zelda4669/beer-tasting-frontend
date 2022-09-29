@@ -15,6 +15,7 @@ const BreweryListing = ({
 }) => {
     return (
         <div>
+            <h3>Search: </h3>
             <Search search={searchBreweries} handleSearch={handleBrewerySearch} type='Name' />
             <Search search = {searchLocations} handleSearch={handleLocationSearch} type='Location' />
             <div class='allBreweries'>

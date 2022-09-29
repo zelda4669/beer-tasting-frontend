@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import BreweryListing from './components/display-breweries'
+import NewBrewery from './components/new-brewery-form'
 
 import breweryService from './services/breweryService'
 
@@ -11,6 +12,8 @@ function App() {
   const [breweries, setBreweries] = useState([])
   const [searchBreweries, setSearchBreweries] = useState('')
   const [searchLocations, setSearchLocations] = useState('')
+  const [newBreweryName, setNewBreweryName] = useState('')
+  const [newBreweryLocation, setNewBreweryLocation] = useState('')
 
   useEffect(() => {
     breweryService
@@ -56,9 +59,53 @@ function App() {
     console.log('Update')
   }
 
+  function addBrewery(e) {
+    e.preventDefault()
+    const breweryObject = {
+      name: newBreweryName,
+      location: newBreweryLocation
+    }
+    const names = breweries.map(b => b.name)
+
+    if(names.includes(newBreweryName)) {
+      window.alert(`${newBreweryName} is already in the database!`)
+      setNewBreweryName('')
+      setNewBreweryLocation('')
+    } else {
+      breweryService
+        .create(breweryObject)
+        .then((returnedBrewery) => {
+          setTimeout(() => {
+            console.log('timeout')
+          }, 500)
+          console.log('outside service', returnedBrewery)
+          setBreweries(breweries.concat(returnedBrewery))
+          console.log(breweries)
+          setNewBreweryName('')
+          setNewBreweryLocation('')
+        })
+        .catch(err => console.log(err))
+    }
+  }
+
+  function handleNameChange(event) {
+    setNewBreweryName(event.target.value)
+  }
+
+  function handleLocationChange(event) {
+    setNewBreweryLocation(event.target.value)
+  }
+
   return (
     <div>
       <h1>Breweries</h1>
+      <NewBrewery 
+        newBrewery={newBreweryName}
+        newBreweryLocation={newBreweryLocation}
+        handleNameChange={handleNameChange}
+        handleLocationChange={handleLocationChange}
+        addBrewery={addBrewery}
+      />
       <BreweryListing 
         searchBreweries={searchBreweries} 
         searchLocations = {searchLocations}
