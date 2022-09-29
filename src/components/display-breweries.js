@@ -9,7 +9,9 @@ const BreweryListing = ({
     brewerySearch, 
     searchLocations, 
     handleLocationSearch, 
-    handleCheck 
+    handleCheck,
+    handleDelete,
+    handleUpdate 
 }) => {
     return (
         <div>
@@ -17,7 +19,13 @@ const BreweryListing = ({
             <Search search = {searchLocations} handleSearch={handleLocationSearch} type='Location' />
             <div class='allBreweries'>
             {brewerySearch.map(b =>
-                <Brewery key={b.id} item={b} handleCheck={handleCheck} />
+                <Brewery 
+                    key={b.id} 
+                    item={b} 
+                    handleCheck={handleCheck} 
+                    handleDelete={handleDelete} 
+                    handleUpdate={handleUpdate} 
+                />
             )}
             </div>
         </div>

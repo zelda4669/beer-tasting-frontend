@@ -34,14 +34,26 @@ function App() {
 
   const brewerySearch = breweries.filter(b => b.name.toLowerCase().includes(searchBreweries) && b.location.toLowerCase().includes(searchLocations))
 
-  const handleBrewerySearch = (event) => {
-    console.log(event.target.value)
+  function handleBrewerySearch(event) {
     setSearchBreweries(event.target.value)
-    console.log('brewery search', brewerySearch)
   }
 
-  const handleLocationSearch = (event) => {
+  function handleLocationSearch(event) {
     setSearchLocations(event.target.value)
+  }
+
+  function handleDelete(event) {
+    let id = event.target.value
+    let brewery = breweries.find(b => b.id === id)
+    if(window.confirm(`Are you sure you want to delete ${brewery.name}? This action cannot be undone.`)) {
+      breweryService
+        .deleteBrewery(id)
+        .then(() => setBreweries(breweries.filter(b => b !== brewery)))
+    }
+  }
+
+  function handleUpdate() {
+    console.log('Update')
   }
 
   return (
@@ -54,6 +66,8 @@ function App() {
         handleLocationSearch={handleLocationSearch} 
         brewerySearch={brewerySearch} 
         handleCheck={handleCheck}
+        handleDelete={handleDelete}
+        handleUpdate={handleUpdate}
       />
     </div>
   )
