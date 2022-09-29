@@ -1,5 +1,7 @@
 # Beer Tasting App React Frontend
 
+[LIVE SITE](https://beer-tasting-express.fly.dev/)
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -12,8 +14,6 @@
 
 This is the React frontend for my beer tasting notes app. The Node/Express backend can be found [here](https://github.com/zelda4669/beer-tasting-express). The Python/Django backend can be found [here](https://github.com/zelda4669/beer-tasting-django).
 
-This frontend has not yet been paired with the backends.
-
 ## Tools Used
 
 - React
@@ -23,7 +23,8 @@ This frontend has not yet been paired with the backends.
 
 ## Next Steps
 
-
+- Add user authentication
+- Add individual brewery pages
 
 ## About Me
 

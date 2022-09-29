@@ -55,10 +55,6 @@ function App() {
     }
   }
 
-  function handleUpdate() {
-    console.log('Update')
-  }
-
   function addBrewery(e) {
     e.preventDefault()
     const breweryObject = {
@@ -75,12 +71,10 @@ function App() {
       breweryService
         .create(breweryObject)
         .then((returnedBrewery) => {
-          setTimeout(() => {
-            console.log('timeout')
-          }, 500)
-          console.log('outside service', returnedBrewery)
+          // setTimeout(() => {
+          //   console.log('timeout')
+          // }, 500)
           setBreweries(breweries.concat(returnedBrewery))
-          console.log(breweries)
           setNewBreweryName('')
           setNewBreweryLocation('')
         })
@@ -114,7 +108,6 @@ function App() {
         brewerySearch={brewerySearch} 
         handleCheck={handleCheck}
         handleDelete={handleDelete}
-        handleUpdate={handleUpdate}
       />
     </div>
   )
