@@ -3,8 +3,8 @@ import Button from './button'
 
 function Brewery({ item, handleCheck, handleDelete, handleUpdate }) {
     return (
-        <div class='breweryCard'>
-            <h3 class='breweryName'>{item.name}</h3>
+        <div className='breweryCard'>
+            <h3 className='breweryName'>{item.name}</h3>
             <ul>
                 <li>Location: {item.location}</li>
                 <li><label>Tried?</label>

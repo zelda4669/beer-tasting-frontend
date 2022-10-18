@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 import BreweryListing from './components/display-breweries'
 import NewBrewery from './components/new-brewery-form'
+import Login from './components/login'
 
 import breweryService from './services/breweryService'
+import loginService from './services/login'
 
 import './App.css'
 
@@ -14,6 +16,9 @@ function App() {
   const [searchLocations, setSearchLocations] = useState('')
   const [newBreweryName, setNewBreweryName] = useState('')
   const [newBreweryLocation, setNewBreweryLocation] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     breweryService
@@ -26,8 +31,8 @@ function App() {
       })
   }, [])
 
-  function handleCheck(event) {
-    let id = event.target.id
+  function handleCheck(e) {
+    let id = e.target.id
     let brewery = breweries.find(b => b.id === id)
     let changedBrewery = {...brewery, tasted: !brewery.tasted}
     breweryService
@@ -37,16 +42,16 @@ function App() {
 
   const brewerySearch = breweries.filter(b => b.name.toLowerCase().includes(searchBreweries) && b.location.toLowerCase().includes(searchLocations))
 
-  function handleBrewerySearch(event) {
-    setSearchBreweries(event.target.value)
+  function handleBrewerySearch(e) {
+    setSearchBreweries(e.target.value)
   }
 
-  function handleLocationSearch(event) {
-    setSearchLocations(event.target.value)
+  function handleLocationSearch(e) {
+    setSearchLocations(e.target.value)
   }
 
-  function handleDelete(event) {
-    let id = event.target.value
+  function handleDelete(e) {
+    let id = e.target.value
     let brewery = breweries.find(b => b.id === id)
     if(window.confirm(`Are you sure you want to delete ${brewery.name}? This action cannot be undone.`)) {
       breweryService
@@ -82,17 +87,52 @@ function App() {
     }
   }
 
-  function handleNameChange(event) {
-    setNewBreweryName(event.target.value)
+  function handleNameChange(e) {
+    setNewBreweryName(e.target.value)
   }
 
-  function handleLocationChange(event) {
-    setNewBreweryLocation(event.target.value)
+  function handleLocationChange(e) {
+    setNewBreweryLocation(e.target.value)
   }
 
-  return (
-    <div>
-      <h1>Breweries</h1>
+  async function handleLogin(e) {
+    e.preventDefault()
+    try {
+      const user = await loginService.login({
+        username, password
+      })
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch(exception) {
+      window.alert('Your username and/or password are incorrect. Please check your credentials and try again.')
+      setUsername('')
+      setPassword('')
+    }
+  }
+
+  function handleUser(e) {
+    setUsername(e.target.value)
+  }
+
+  function handlePassword(e) {
+    setPassword(e.target.value)
+  }
+
+  function loginForm() {
+    return(
+      <Login
+        userValue={username}
+        handleUser={handleUser}
+        passwordValue={password}
+        handlePassword={handlePassword}
+        handleLogin={handleLogin}
+      />
+    )
+  }
+
+  function breweryForm() {
+    return(
       <NewBrewery 
         newBrewery={newBreweryName}
         newBreweryLocation={newBreweryLocation}
@@ -100,6 +140,21 @@ function App() {
         handleLocationChange={handleLocationChange}
         addBrewery={addBrewery}
       />
+    )
+  }
+
+  return (
+    <div>
+      <h1>Breweries</h1>
+      
+      {user === null
+        ? loginForm()
+        : <div>
+            <p>Welcome, {user.username}!</p>
+            {breweryForm()}
+          </div>
+      }
+
       <BreweryListing 
         searchBreweries={searchBreweries} 
         searchLocations = {searchLocations}

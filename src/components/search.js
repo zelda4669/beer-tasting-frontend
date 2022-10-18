@@ -1,11 +1,13 @@
 import React from 'react'
+import Field from './field'
 
 const Search = ({ search, handleSearch, type }) => {
     return(
         <div>
-        Search by {type}: <input
+        Search by {type}: <Field
                   value={search}
-                  onChange={handleSearch}
+                  handleChange={handleSearch}
+                  type='text'
                 />
       </div>
     )

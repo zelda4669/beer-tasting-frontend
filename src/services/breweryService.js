@@ -1,19 +1,19 @@
 import axios from 'axios'
 const baseUrl = '/api/brewery'
 
-function getAll() {
-    let req = axios.get(baseUrl)
-    return req.then(res => res.data)
+async function getAll() {
+    let res = await axios.get(baseUrl)
+    return res.data
 }
 
-const create = (newObject) => {
-    let request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
+async function create(newObject) {
+    let res = await axios.post(baseUrl, newObject)
+    return res.data
 }
 
-function updateBrewery(id, newObject) {
-    let req = axios.put(`${baseUrl}/${id}`, newObject)
-    return req.then(res => res.data)
+async function updateBrewery(id, newObject) {
+    let res = await axios.put(`${baseUrl}/${id}`, newObject)
+    return res.data
 }
 
 function deleteBrewery(id) {
