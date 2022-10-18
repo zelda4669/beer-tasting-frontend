@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import BreweryListing from './components/display-breweries'
 import NewBrewery from './components/new-brewery-form'
 import Login from './components/login'
+import Button from './components/button'
 
 import breweryService from './services/breweryService'
 import loginService from './services/login'
@@ -29,6 +30,15 @@ function App() {
       .catch(err => {
         console.log(err)
       })
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBreweryappUser')
+    if(loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      breweryService.setToken(user.token)
+    }
   }, [])
 
   function handleCheck(e) {
@@ -101,6 +111,12 @@ function App() {
       const user = await loginService.login({
         username, password
       })
+
+      window.localStorage.setItem(
+        'loggedBreweryappUser', JSON.stringify(user)
+      )
+
+      breweryService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -109,6 +125,15 @@ function App() {
       setUsername('')
       setPassword('')
     }
+  }
+
+  function handleLogout(e) {
+    e.preventDefault()
+    breweryService.setToken(null)
+    setUser(null)
+    window.localStorage.setItem(
+      'loggedBreweryappUser', null
+    )
   }
 
   function handleUser(e) {
@@ -150,7 +175,7 @@ function App() {
       {user === null
         ? loginForm()
         : <div>
-            <p>Welcome, {user.username}!</p>
+            <p>Welcome, {user.username}! <Button value='logout' onClick={handleLogout} text='Logout' /></p>
             {breweryForm()}
           </div>
       }

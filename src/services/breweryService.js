@@ -1,13 +1,22 @@
 import axios from 'axios'
 const baseUrl = '/api/brewery'
 
+let token = null
+
+function setToken(newToken) {
+    token = `bearer ${newToken}`
+}
+
 async function getAll() {
     let res = await axios.get(baseUrl)
     return res.data
 }
 
 async function create(newObject) {
-    let res = await axios.post(baseUrl, newObject)
+    let config = {
+        headers: { Authorization: token }
+    }
+    let res = await axios.post(baseUrl, newObject, config)
     return res.data
 }
 
@@ -24,7 +33,8 @@ const breweryService = {
     getAll, 
     create, 
     updateBrewery, 
-    deleteBrewery 
+    deleteBrewery,
+    setToken 
 }
 
 export default breweryService

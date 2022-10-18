@@ -11,6 +11,7 @@ function NewBrewery({
     function click() {
         console.log('click')
     }
+    
     return(
         <div>
             <h3>Add A Brewery:</h3>
