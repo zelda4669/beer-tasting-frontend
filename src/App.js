@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import BreweryListing from './components/display-breweries'
 import NewBrewery from './components/new-brewery-form'
 import Login from './components/login'
 import Button from './components/button'
+import Toggle from './components/toggle'
 
 import breweryService from './services/breweryService'
 import loginService from './services/login'
@@ -70,6 +71,8 @@ function App() {
     }
   }
 
+  const breweryFormRef = useRef()
+
   function addBrewery(e) {
     e.preventDefault()
     const breweryObject = {
@@ -83,12 +86,10 @@ function App() {
       setNewBreweryName('')
       setNewBreweryLocation('')
     } else {
+      breweryFormRef.current.toggleVisibility()
       breweryService
         .create(breweryObject)
         .then((returnedBrewery) => {
-          // setTimeout(() => {
-          //   console.log('timeout')
-          // }, 500)
           setBreweries(breweries.concat(returnedBrewery))
           setNewBreweryName('')
           setNewBreweryLocation('')
@@ -146,25 +147,30 @@ function App() {
 
   function loginForm() {
     return(
-      <Login
-        userValue={username}
-        handleUser={handleUser}
-        passwordValue={password}
-        handlePassword={handlePassword}
-        handleLogin={handleLogin}
-      />
+      <Toggle value='login' buttonLabel='Login'>
+        <Login
+          username={username}
+          handleUser={handleUser}
+          password={password}
+          handlePassword={handlePassword}
+          handleLogin={handleLogin}
+        />
+        </Toggle>
     )
   }
 
   function breweryForm() {
     return(
-      <NewBrewery 
-        newBrewery={newBreweryName}
-        newBreweryLocation={newBreweryLocation}
-        handleNameChange={handleNameChange}
-        handleLocationChange={handleLocationChange}
-        addBrewery={addBrewery}
-      />
+      <Toggle value='add' buttonLabel='Add a Brewery' ref={breweryFormRef}>
+        <NewBrewery 
+          newBrewery={newBreweryName}
+          newBreweryLocation={newBreweryLocation}
+          handleNameChange={handleNameChange}
+          handleLocationChange={handleLocationChange}
+          addBrewery={addBrewery}
+        />
+      </Toggle>
+      
     )
   }
 
