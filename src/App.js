@@ -45,7 +45,7 @@ function App() {
   function handleCheck(e) {
     let id = e.target.id
     let brewery = breweries.find(b => b.id === id)
-    let changedBrewery = {...brewery, tasted: !brewery.tasted}
+    let changedBrewery = { ...brewery, tasted: !brewery.tasted }
     breweryService
       .updateBrewery(brewery.id, changedBrewery)
     setChecked(!checked)
@@ -155,14 +155,14 @@ function App() {
           handlePassword={handlePassword}
           handleLogin={handleLogin}
         />
-        </Toggle>
+      </Toggle>
     )
   }
 
   function breweryForm() {
     return(
       <Toggle value='add' buttonLabel='Add a Brewery' ref={breweryFormRef}>
-        <NewBrewery 
+        <NewBrewery
           newBrewery={newBreweryName}
           newBreweryLocation={newBreweryLocation}
           handleNameChange={handleNameChange}
@@ -170,28 +170,28 @@ function App() {
           addBrewery={addBrewery}
         />
       </Toggle>
-      
+
     )
   }
 
   return (
     <div>
       <h1>Breweries</h1>
-      
+
       {user === null
         ? loginForm()
         : <div>
-            <p>Welcome, {user.username}! <Button value='logout' onClick={handleLogout} text='Logout' /></p>
-            {breweryForm()}
-          </div>
+          <p>Welcome, {user.username}! <Button value='logout' onClick={handleLogout} text='Logout' /></p>
+          {breweryForm()}
+        </div>
       }
 
-      <BreweryListing 
-        searchBreweries={searchBreweries} 
+      <BreweryListing
+        searchBreweries={searchBreweries}
         searchLocations = {searchLocations}
         handleBrewerySearch={handleBrewerySearch}
-        handleLocationSearch={handleLocationSearch} 
-        brewerySearch={brewerySearch} 
+        handleLocationSearch={handleLocationSearch}
+        brewerySearch={brewerySearch}
         handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
