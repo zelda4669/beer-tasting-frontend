@@ -18,8 +18,6 @@ function App() {
   const [searchLocations, setSearchLocations] = useState('')
   const [newBreweryName, setNewBreweryName] = useState('')
   const [newBreweryLocation, setNewBreweryLocation] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -106,11 +104,14 @@ function App() {
     setNewBreweryLocation(e.target.value)
   }
 
+  const loginRef = useRef()
+
   async function handleLogin(e) {
     e.preventDefault()
     try {
       const user = await loginService.login({
-        username, password
+        username: loginRef.current.username,
+        password: loginRef.current.password
       })
 
       window.localStorage.setItem(
@@ -119,12 +120,12 @@ function App() {
 
       breweryService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      loginRef.current.setUsername('')
+      loginRef.current.setPassword('')
     } catch(exception) {
       window.alert('Your username and/or password are incorrect. Please check your credentials and try again.')
-      setUsername('')
-      setPassword('')
+      loginRef.current.setUsername('')
+      loginRef.current.setPassword('')
     }
   }
 
@@ -132,29 +133,13 @@ function App() {
     e.preventDefault()
     breweryService.setToken(null)
     setUser(null)
-    window.localStorage.setItem(
-      'loggedBreweryappUser', null
-    )
-  }
-
-  function handleUser(e) {
-    setUsername(e.target.value)
-  }
-
-  function handlePassword(e) {
-    setPassword(e.target.value)
+    window.localStorage.removeItem('loggedBreweryappUser')
   }
 
   function loginForm() {
     return(
       <Toggle value='login' buttonLabel='Login'>
-        <Login
-          username={username}
-          handleUser={handleUser}
-          password={password}
-          handlePassword={handlePassword}
-          handleLogin={handleLogin}
-        />
+        <Login handleLogin={handleLogin} ref={loginRef} />
       </Toggle>
     )
   }
