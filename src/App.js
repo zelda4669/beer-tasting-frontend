@@ -12,7 +12,6 @@ import loginService from './services/login'
 import './App.css'
 
 function App() {
-  const [checked, setChecked] = useState(false)
   const [breweries, setBreweries] = useState([])
   const [searchBreweries, setSearchBreweries] = useState('')
   const [searchLocations, setSearchLocations] = useState('')
@@ -20,7 +19,12 @@ function App() {
   const [newBreweryLocation, setNewBreweryLocation] = useState('')
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
+  const breweryFormRef = useRef()
+  const loginRef = useRef()
+
+  const brewerySearch = breweries.filter(b => b.name.toLowerCase().includes(searchBreweries) && b.location.toLowerCase().includes(searchLocations))
+
+  useEffect(() => { //keep
     breweryService
       .getAll()
       .then(initialBreweries => {
@@ -31,7 +35,7 @@ function App() {
       })
   }, [])
 
-  useEffect(() => {
+  useEffect(() => { //keey
     const loggedUserJSON = window.localStorage.getItem('loggedBreweryappUser')
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -40,26 +44,16 @@ function App() {
     }
   }, [])
 
-  function handleCheck(e) {
-    let id = e.target.id
-    let brewery = breweries.find(b => b.id === id)
-    let changedBrewery = { ...brewery, tasted: !brewery.tasted }
-    breweryService
-      .updateBrewery(brewery.id, changedBrewery)
-    setChecked(!checked)
-  }
 
-  const brewerySearch = breweries.filter(b => b.name.toLowerCase().includes(searchBreweries) && b.location.toLowerCase().includes(searchLocations))
-
-  function handleBrewerySearch(e) {
+  function handleBrewerySearch(e) { //keep
     setSearchBreweries(e.target.value)
   }
 
-  function handleLocationSearch(e) {
+  function handleLocationSearch(e) { //keep
     setSearchLocations(e.target.value)
   }
 
-  function handleDelete(e) {
+  function handleDelete(e) { //keep
     let id = e.target.value
     let brewery = breweries.find(b => b.id === id)
     if(window.confirm(`Are you sure you want to delete ${brewery.name}? This action cannot be undone.`)) {
@@ -68,8 +62,6 @@ function App() {
         .then(() => setBreweries(breweries.filter(b => b !== brewery)))
     }
   }
-
-  const breweryFormRef = useRef()
 
   function addBrewery(e) {
     e.preventDefault()
@@ -103,8 +95,6 @@ function App() {
   function handleLocationChange(e) {
     setNewBreweryLocation(e.target.value)
   }
-
-  const loginRef = useRef()
 
   async function handleLogin(e) {
     e.preventDefault()
@@ -177,7 +167,6 @@ function App() {
         handleBrewerySearch={handleBrewerySearch}
         handleLocationSearch={handleLocationSearch}
         brewerySearch={brewerySearch}
-        handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
     </div>

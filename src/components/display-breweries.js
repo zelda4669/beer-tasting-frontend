@@ -9,9 +9,7 @@ const BreweryListing = ({
   brewerySearch,
   searchLocations,
   handleLocationSearch,
-  handleCheck,
-  handleDelete,
-  handleUpdate
+  handleDelete
 }) => {
   return (
     <div>
@@ -23,9 +21,7 @@ const BreweryListing = ({
           <Brewery
             key={b.id}
             item={b}
-            handleCheck={handleCheck}
             handleDelete={handleDelete}
-            handleUpdate={handleUpdate}
           />
         )}
       </div>
